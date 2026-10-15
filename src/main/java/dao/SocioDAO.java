@@ -1,4 +1,6 @@
 package dao;
+
+import Entidades.Socio;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -6,28 +8,28 @@ import java.util.List;
 
 public class SocioDAO {
 
-    // 1. Guardar Socio
+    // 1. Guardar Entidades.Socio
     public void guardar(Socio socio) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             session.persist(socio);
             tx.commit();
-            System.out.println("Socio agregado correctamente con Hibernate.");
+            System.out.println("Entidades.Socio agregado correctamente con Hibernate.");
         } catch (Exception e) {
             if (tx != null) tx.rollback();
             System.out.println("Error al guardar el socio: " + e.getMessage());
         }
     }
 
-    // 2. Listar todos los socios
+    // Listar todos los socios
     public List<Socio> listarTodos() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM Socio", Socio.class).getResultList();
         }
     }
 
-    // 3. Buscar socio por DNI (Usando HQL con parámetros)
+    // Buscar socio por DNI (Usando HQL con parámetros)
     public Socio buscarPorDni(String dni) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Socio> query = session.createQuery("FROM Socio WHERE dni = :dni", Socio.class);
@@ -36,7 +38,7 @@ public class SocioDAO {
         }
     }
 
-    // 4. Eliminar socio por ID
+    // Eliminar socio por ID
     public void eliminar(int idSocio) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -45,7 +47,7 @@ public class SocioDAO {
             if (socio != null) {
                 session.remove(socio);
                 tx.commit();
-                System.out.println("Socio eliminado correctamente.");
+                System.out.println("Entidades.Socio eliminado correctamente.");
             } else {
                 System.out.println("No se encontró un socio con ese ID.");
             }
